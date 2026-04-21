@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Modo Caverna OS - Sistema de Produtividade para Engenharia">
+    <title>Modo Caverna OS | System Kernel v7.0</title>
+
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M10 90L30 20L70 20L90 90%22 stroke=%22%23ef4444%22 stroke-width=%224%22 fill=%22none%22/></svg>">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="Modo Caverna">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#050505">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/thiagoinfosec/modo-caverna">
+    <meta property="og:title" content="Modo Caverna OS | Produtividade Engenharia">
+    <meta property="og:description" content="Sistema operacional de foco e gestão financeira para engenheiros.">
+
+    <meta property="og:image" content="https://github.com/thiagoinfosec/modo-caverna">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Modo Caverna OS">
+    <meta name="twitter:description" content="Sistema de produtividade extremo.">
+    <meta name="twitter:image" content="https://github.com/thiagoinfosec/modo-caverna">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;300;400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="brand-container">
+            <div class="brand-logo-container">
+                <svg class="svg-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 90L30 20L70 20L90 90" stroke="var(--color-primary)" stroke-width="4"
+                        stroke-linecap="round" stroke-linejoin="round" fill="rgba(239, 68, 68, 0.05)" />
+                    <path d="M30 60L50 45L70 60" stroke="var(--color-primary)" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" opacity="0.7" />
+
+                    <circle cx="50" cy="75" r="6" fill="var(--color-primary)">
+                        <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="1;0.7;1" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+                <span class="brand-text">
+                    Modo<br>Caverna
+                </span>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <button class="nav-btn active" onclick="System.navigate('dashboard')">
+                <i class="fas fa-chart-pie"></i> Visão Geral
+            </button>
+            <button class="nav-btn" onclick="System.navigate('financeiro')">
+                <i class="fas fa-university"></i> Central Bancária
+            </button>
+            <button class="nav-btn" onclick="System.navigate('tarefas')">
+                <i class="fas fa-tasks"></i> Tarefas
+            </button>
+            <button class="nav-btn" onclick="System.navigate('habitos')">
+                <i class="fas fa-stopwatch"></i> Hábitos
+            </button>
+            <button class="nav-btn" onclick="System.navigate('biblioteca')">
+                <i class="fas fa-book"></i> Biblioteca
+            </button>
+        </nav>
+
+        <div class="youtube-widget">
+            <div class="youtube-header">
+                <i class="fab fa-youtube" style="color: #ff0000;"></i> FOCUS STATION
+            </div>
+
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/9Lu9Y36uKtI?start=60&controls=1&modestbranding=1"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="fade-in">
+            <div class="header-title-group">
+                <h1 class="mono" id="greeting-text">Inicializando Sistema...</h1>
+                <p class="header-subtitle mono">Usuário: Engenheiro</p>
+            </div>
+
+            <div>
+                <button class="header-streak-btn" onclick="StreakModule.openModal()">
+                    <span id="header-streak-count">0</span> <i class="fas fa-fire"></i>
+                </button>
+            </div>
+        </header>
+
+        <div id="dashboard" class="view-section fade-in">
+            <div class="grid-container">
+
+                <div class="card col-12 mobile-only">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <i class="fab fa-youtube" style="color: #ff0000; margin-right: 8px;"></i>
+                            Focus Station
+                        </span>
+                    </div>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/9Lu9Y36uKtI?start=60&controls=1&modestbranding=1"
+                            title="Focus Mode" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <div class="card col-4">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-wallet"
+                                style="margin-right:8px; color:var(--color-primary)"></i> Patrimônio Total</span>
+                    </div>
+                    <h2 class="mono" style="font-size: 2.5rem; font-weight: 700;">R$ <span
+                            id="dash-total-equity">0.00</span></h2>
+                    <small style="color: var(--color-text-muted); margin-top: 5px;">Consolidado de todas as
+                        contas</small>
+                </div>
+
+                <div class="card col-4">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-check-double"
+                                style="margin-right:8px; color:var(--color-success)"></i> Produtividade</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 5px;">
+                        <div style="display: flex;">
+                            <div style="flex: 1; text-align: center; cursor: pointer; padding: 10px 0; border-radius: 8px; transition: 0.2s;"
+                                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.05)'"
+                                onmouseout="this.style.backgroundColor='transparent'"
+                                onclick="DashboardModule.showTasks('pending')">
+                                <h2 style="font-size: 2rem; color: #fff; line-height: 1;" id="dash-pending-tasks">0</h2>
+                                <small class="mono"
+                                    style="color: var(--color-text-muted); font-size: 0.75rem;">Pendentes</small>
+                            </div>
+                            <div style="width: 1px; background: rgba(255,255,255,0.1); margin: 10px 0;"></div>
+                            <div style="flex: 1; text-align: center; cursor: pointer; padding: 10px 0; border-radius: 8px; transition: 0.2s;"
+                                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.05)'"
+                                onmouseout="this.style.backgroundColor='transparent'"
+                                onclick="DashboardModule.showTasks('today')">
+                                <h2 style="font-size: 2rem; color: #3b82f6; line-height: 1;" id="dash-today-tasks">0
+                                </h2>
+                                <small class="mono" style="color: var(--color-text-muted); font-size: 0.75rem;">Para
+                                    Hoje</small>
+                            </div>
+                        </div>
+
+                        <div style="height: 1px; background: rgba(255,255,255,0.1); width: 100%;"></div>
+
+                        <div style="display: flex;">
+                            <div style="flex: 1; text-align: center; cursor: pointer; padding: 10px 0; border-radius: 8px; transition: 0.2s;"
+                                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.05)'"
+                                onmouseout="this.style.backgroundColor='transparent'"
+                                onclick="DashboardModule.showTasks('done')">
+                                <h2 style="font-size: 2rem; color: var(--color-success); line-height: 1;"
+                                    id="dash-done-tasks">0</h2>
+                                <small class="mono"
+                                    style="color: var(--color-text-muted); font-size: 0.75rem;">Concluídas</small>
+                            </div>
+                            <div style="width: 1px; background: rgba(255,255,255,0.1); margin: 10px 0;"></div>
+                            <div style="flex: 1; text-align: center; cursor: pointer; padding: 10px 0; border-radius: 8px; transition: 0.2s;"
+                                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.05)'"
+                                onmouseout="this.style.backgroundColor='transparent'"
+                                onclick="DashboardModule.showTasks('missed')">
+                                <h2 style="font-size: 2rem; color: var(--color-danger); line-height: 1;"
+                                    id="dash-missed-tasks">0</h2>
+                                <small class="mono"
+                                    style="color: var(--color-text-muted); font-size: 0.75rem;">Atrasadas</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card col-4">
+                    <div class="card-header" style="justify-content: space-between; align-items: center;">
+                        <span class="card-title">Performance</span>
+                        <span id="radar-total-score" class="mono"
+                            style="font-weight: 900; font-size: 1.5rem; color: var(--color-primary);"></span>
+                    </div>
+
+                    <div style="height: 240px; position: relative; margin-bottom: 10px;">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card col-6">
+                    <div class="card-header"><span class="card-title">Distribuição de Ativos</span></div>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="distChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card col-6">
+                    <div class="card-header" style="justify-content: space-between; align-items: center;">
+                        <span class="card-title">Fluxo de Caixa (Mensal)</span>
+
+                        <div style="position: relative;">
+                            <select id="flow-month-filter" class="form-control" style="
+                                width: 120px; 
+                                height: 30px; 
+                                padding: 0 10px; 
+                                font-size: 0.8rem; 
+                                cursor: pointer;
+                                text-align: center;
+                                text-align-last: center;
+                                margin-bottom: 0;" onchange="ChartsModule.renderFlow()">
+                            </select>
+                        </div>
+                    </div>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="flowChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card col-12">
+                    <div class="card-header pie-header">
+                        <div class="pie-title-wrapper">
+                            <span class="card-title" style="margin: 0;">Detalhamento</span>
+                            <span id="cat-pie-total-label" class="mono pie-total"></span>
+                        </div>
+
+                        <div class="pie-filters">
+                            <select id="cat-pie-month-filter" class="form-control select-small"
+                                onchange="ChartsModule.renderCategoryPie()"></select>
+
+                            <select id="cat-pie-filter" class="form-control select-small"
+                                onchange="ChartsModule.renderCategoryPie()">
+                                <option value="expense">Saídas</option>
+                                <option value="income">Entradas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="height: 360px; position: relative;">
+                        <canvas id="categoryPieChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card col-12">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <i class="fas fa-shield-alt" style="margin-right:8px; color:var(--color-info)"></i>
+                            Segurança de Dados
+                        </span>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="System.backup()"
+                            style="background: var(--color-info); flex: 1; box-shadow: none !important;">
+                            <i class="fas fa-download"></i> Baixar Dados (Backup)
+                        </button>
+
+                        <button class="btn-primary" onclick="document.getElementById('restore-file').click()"
+                            style="background: var(--color-warning); flex: 1; box-shadow: none !important;">
+                            <i class="fas fa-upload"></i> Restaurar Dados
+                        </button>
+
+                        <input type="file" id="restore-file" style="display:none" accept=".json"
+                            onchange="System.restore(this)">
+                    </div>
+
+                    <small style="color: var(--color-text-muted); margin-top: 15px; display: block; font-size: 0.8rem;">
+                        <i class="fas fa-info-circle"></i> <strong>Importante:</strong> Seus dados ficam salvos apenas
+                        neste navegador. Faça backups semanais ou antes de limpar o cache.
+                    </small>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="financeiro" class="view-section hidden fade-in">
+            <div class="grid-container">
+
+                <div class="card col-6">
+                    <div class="card-header">
+                        <span class="card-title">Contas Vinculadas</span>
+                        <button class="card-action-btn" onclick="UI.toggle('bank-add-form')">+ Nova Conta</button>
+                    </div>
+                    <div id="bank-add-form" class="hidden"
+                        style="margin-bottom: 20px; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;">
+                        <select id="bank-select" class="form-control">
+                            <option value="Caixa Econômica">Caixa Econômica</option>
+                            <option value="Itaú">Itaú</option>
+                            <option value="BTG Pactual Banking">BTG Pactual Banking</option>
+                        </select>
+                        <input type="number" id="bank-balance-init" class="form-control"
+                            placeholder="Saldo Inicial (R$)">
+                        <button class="btn-primary" onclick="FinanceModule.addAccount()">Salvar</button>
+                    </div>
+                    <div id="bank-list-container"></div>
+                </div>
+
+                <div class="card col-12">
+                    <div class="card-header"
+                        style="display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap;">
+                        <span class="card-title"
+                            style="white-space: normal; line-height: 1.2; padding-right: 10px; flex-shrink: 1;">
+                            <i class="fas fa-hand-holding-usd" style="margin-right:8px; color:var(--color-success)"></i>
+                            Receitas Fixas<br>Mensais
+                        </span>
+                        <button class="card-action-btn" onclick="FixedIncomeModule.cancelEdit()"
+                            style="white-space: nowrap; flex-shrink: 0;">
+                            + Nova / Cancelar
+                        </button>
+                    </div>
+
+                    <div id="inc-add-form" class="hidden"
+                        style="margin-bottom: 20px; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;">
+                        <div class="input-group-row" style="display:flex; gap:10px; margin-bottom: 10px;">
+                            <input type="text" id="inc-name" class="form-control" placeholder="Descrição (ex: Salário)"
+                                style="margin-bottom:0; flex:1.5;">
+
+                            <select id="inc-cat" class="form-control" style="margin-bottom:0; flex:1;">
+                                <option value="Salário">💼 Salário/Renda</option>
+                                <option value="Investimento">💰 Investimento</option>
+                                <option value="Outros">📦 Outros</option>
+                            </select>
+                        </div>
+
+                        <div class="date-time-wrapper"
+                            style="display:flex; gap:10px; align-items: center; margin-bottom: 0;">
+                            <input type="number" id="inc-val" class="form-control" placeholder="Valor (R$)"
+                                style="margin-bottom:0; flex:1;">
+                            <input type="date" id="inc-date" class="form-control" style="margin-bottom:0; flex: 1;">
+                            <button id="btn-save-inc" class="btn-primary" onclick="FixedIncomeModule.save()"
+                                style="width: auto; background: var(--color-success); margin-bottom: 0; padding: 0 20px; flex: 1;">
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <div style="text-align: center;">
+                                <small style="color: #888; font-size: 0.7rem;">PREVISÃO</small>
+                                <div style="font-weight: 700; color: #fff;" id="inc-total">R$ 0.00</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <small style="color: #888; font-size: 0.7rem;">RECEBIDO</small>
+                                <div style="font-weight: 700; color: var(--color-success);" id="inc-received">R$ 0.00
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <small style="color: #888; font-size: 0.7rem;">FALTA</small>
+                                <div style="font-weight: 700; color: #888;" id="inc-remaining">R$ 0.00</div>
+                            </div>
+                        </div>
+                        <div style="width:100%; height:4px; background:#222; border-radius:2px; overflow:hidden;">
+                            <div id="inc-progress-bar"
+                                style="width:0%; height:100%; background:var(--color-success); transition:0.5s;"></div>
+                        </div>
+                    </div>
+
+                    <div id="inc-list-container" class="habit-grid-container"></div>
+                </div>
+
+                <div class="card col-12">
+                    <div class="card-header"
+                        style="display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap;">
+                        <span class="card-title"
+                            style="white-space: normal; line-height: 1.2; padding-right: 10px; flex-shrink: 1;">
+                            <i class="fas fa-file-invoice-dollar"
+                                style="margin-right:8px; color:var(--color-danger)"></i>
+                            Gastos Fixos<br>Mensais
+                        </span>
+                        <button class="card-action-btn" onclick="FixedExpensesModule.cancelEdit()"
+                            style="white-space: nowrap; flex-shrink: 0;">
+                            + Nova / Cancelar
+                        </button>
+                    </div>
+
+                    <div id="fixed-add-form" class="hidden"
+                        style="margin-bottom: 20px; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;">
+                        <div class="input-group-row" style="display:flex; gap:10px; margin-bottom: 10px;">
+                            <input type="text" id="fixed-name" class="form-control" placeholder="Nome (ex: Aluguel)"
+                                style="margin-bottom:0; flex:1.5;">
+
+                            <select id="fixed-cat" class="form-control" style="margin-bottom:0; flex:1;">
+                                <option value="Outros">📦 Outros</option>
+                                <option value="Alimentação">🍔 Alimentação</option>
+                                <option value="Transporte">🚗 Transporte</option>
+                                <option value="Moradia">🏠 Moradia</option>
+                                <option value="Educação">📚 Educação</option>
+                                <option value="Lazer/Assinaturas">🎬 Lazer/Assinaturas</option>
+                                <option value="Saúde/Cuidados">💊 Saúde/Cuidados</option>
+                                <option value="Compras">🛒 Compras</option>
+                            </select>
+                        </div>
+
+                        <div class="date-time-wrapper"
+                            style="display:flex; gap:10px; align-items: center; margin-bottom: 0;">
+                            <input type="number" id="fixed-val" class="form-control" placeholder="Valor (R$)"
+                                style="margin-bottom:0; flex:1;">
+                            <input type="date" id="fixed-date" class="form-control" style="margin-bottom:0; flex:1;">
+                            <input type="time" id="fixed-time" class="form-control"
+                                style="margin-bottom:0; width: 80px;">
+                            <button id="btn-save-fix" class="btn-primary" onclick="FixedExpensesModule.save()"
+                                style="width: auto; margin-bottom: 0; padding: 0 20px; flex: 1;">
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <div style="text-align: center;">
+                                <small style="color: #888; font-size: 0.7rem;">TOTAL</small>
+                                <div style="font-weight: 700; color: #fff;" id="fixed-total">R$ 0.00</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <small style="color: #888; font-size: 0.7rem;">PAGO</small>
+                                <div style="font-weight: 700; color: var(--color-success);" id="fixed-paid">R$ 0.00
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <small style="color: #888; font-size: 0.7rem;">FALTA</small>
+                                <div style="font-weight: 700; color: var(--color-danger);" id="fixed-remaining">R$ 0.00
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:100%; height:4px; background:#222; border-radius:2px; overflow:hidden;">
+                            <div id="fixed-progress-bar"
+                                style="width:0%; height:100%; background:var(--color-success); transition:0.5s;"></div>
+                        </div>
+                    </div>
+
+                    <div id="fixed-list-container" class="habit-grid-container"></div>
+                </div>
+
+                <div class="card col-6" id="card-operacoes">
+                    <div class="card-header">
+                        <span class="card-title">Registro de Operações</span>
+                    </div>
+
+                    <div
+                        style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed rgba(255,255,255,0.1);">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                            <label style="font-size: 0.8rem; color: #888;">Detalhes da Operação:</label>
+                            <span id="btn-cancel-trans-edit" onclick="FinanceModule.cancelEditTransaction()"
+                                style="font-size: 0.75rem; color: var(--color-danger); cursor: pointer; display: none; text-decoration: underline;">
+                                Cancelar Edição
+                            </span>
+                        </div>
+
+                        <div class="input-group-row" style="display:flex; gap:10px; margin-bottom: 10px;">
+                            <input type="date" id="trans-date" class="form-control" style="margin-bottom:0; flex:1;">
+                            <select id="trans-cat" class="form-control" style="margin-bottom:0; flex:1.5;">
+                                <option value="Outros">📦 Outros</option>
+                                <option value="Alimentação">🍔 Alimentação</option>
+                                <option value="Transporte">🚗 Transporte</option>
+                                <option value="Moradia">🏠 Moradia</option>
+                                <option value="Educação">📚 Educação</option>
+                                <option value="Lazer/Assinaturas">🎬 Lazer/Assinaturas</option>
+                                <option value="Saúde/Cuidados">💊 Saúde/Cuidados</option>
+                                <option value="Compras">🛒 Compras</option>
+                                <option value="Investimento">💰 Investimento</option>
+                                <option value="Salário">💼 Salário/Renda</option>
+                            </select>
+                        </div>
+
+                        <input type="text" id="trans-desc" class="form-control"
+                            placeholder="Descrição (ex: Almoço, Netflix...)" style="margin-bottom: 10px;">
+
+                        <div class="input-group-row" style="display:flex; gap:10px; margin-bottom: 10px;">
+                            <input type="number" id="trans-val" class="form-control" placeholder="Valor (R$)" style="flex: 1; margin-bottom: 0;">
+                            <select id="trans-payment-method" class="form-control" style="flex: 1; margin-bottom: 0;">
+                                <option value="Pix">Pix</option>
+                                <option value="Débito">Débito</option>
+                                <option value="Crédito">Crédito</option>
+                                <option value="Dinheiro">Dinheiro</option>
+                                <option value="Transferência">Transferência</option>
+                            </select>
+                            <select id="trans-account-select" class="form-control" style="flex: 1; margin-bottom: 0;">
+                                <option value="" disabled selected>Selecione a Conta</option>
+                            </select>
+                        </div>
+
+                        <div class="btn-group btns-financeiro" style="width: 100%;">
+                            <button id="btn-expense" class="btn-danger"
+                                onclick="FinanceModule.addTransaction('expense')">
+                                <i class="fas fa-arrow-down"></i> Saída
+                            </button>
+                            <button id="btn-income" class="btn-success"
+                                onclick="FinanceModule.addTransaction('income')">
+                                <i class="fas fa-arrow-up"></i> Entrada
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-header"
+                        style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <span class="card-title" style="margin: 0;">HISTÓRICO RECENTE</span>
+
+                            <div class="filtro-container">
+                                <select id="filter-month" class="form-control"
+                                    style="width: 100% !important; height: 35px !important; margin-bottom: 0 !important; padding: 0 5px; font-size: 0.75rem; cursor: pointer; text-align: center; text-align-last: center;"
+                                    onchange="FinanceModule.render()">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                            <span style="font-size: 0.8rem; color: #888; font-weight: 500; white-space: nowrap;">Filtrar
+                                por:</span>
+
+                            <div style="display: flex; gap: 8px;">
+                                <div class="filtro-container">
+                                    <select id="filter-type" class="form-control"
+                                        style="width: 100% !important; height: 35px !important; margin-bottom: 0 !important; padding: 0 5px; font-size: 0.75rem; cursor: pointer; text-align: center; text-align-last: center;"
+                                        onchange="FinanceModule.render()">
+                                        <option value="all">Tip: Todos</option>
+                                        <option value="income">Entradas</option>
+                                        <option value="expense">Saídas</option>
+                                    </select>
+                                </div>
+
+                                <div class="filtro-container">
+                                    <select id="filter-cat" class="form-control"
+                                        style="width: 100% !important; height: 35px !important; margin-bottom: 0 !important; padding: 0 5px; font-size: 0.75rem; cursor: pointer; text-align: center; text-align-last: center; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
+                                        onchange="FinanceModule.render()">
+                                        <option value="all">Cat: Todas</option>
+                                        <option value="Outros">📦 Outros</option>
+                                        <option value="Alimentação">🍔 Alimentação</option>
+                                        <option value="Transporte">🚗 Transporte</option>
+                                        <option value="Moradia">🏠 Moradia</option>
+                                        <option value="Educação">📚 Educação</option>
+                                        <option value="Lazer/Assinaturas">🎬 Lazer</option>
+                                        <option value="Saúde/Cuidados">💊 Saúde</option>
+                                        <option value="Compras">🛒 Compras</option>
+                                        <option value="Investimento">💰 Investimento</option>
+                                        <option value="Salário">💼 Salário</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="transaction-log" class="transaction-list"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="tarefas" class="view-section hidden fade-in">
+            <div class="card card-centralizado">
+
+                <div class="card-header" style="justify-content: space-between; margin-bottom: 20px;">
+                    <span class="card-title">BACKLOG DE EXECUÇÃO</span>
+                    <div style="position: relative; display: flex; gap: 10px; align-items: center;">
+                        <input type="date" id="task-history-date" class="form-control" title="Selecione uma data passada"
+                            style="width: auto; height: 30px; padding: 0 10px; font-size: 0.8rem; margin: 0; background: rgba(0,0,0,0.4);"
+                            onchange="document.getElementById('task-view-filter').value='date'; TaskModule.render()">
+                        <select id="task-view-filter" class="form-control"
+                            style="width: auto; height: 30px; padding: 0 10px; font-size: 0.8rem; text-align: center; text-align-last: center; margin: 0;"
+                            onchange="TaskModule.render()">
+                            <option value="all">Todas</option>
+                            <option value="today">Para Hoje</option>
+                            <option value="high">Alta Prioridade</option>
+                            <option value="low">Pode esperar</option>
+                            <option value="date">Histórico (Data)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-bottom: 25px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.02);">
+                    <div style="display:flex; justify-content:space-between; margin-bottom: 10px; align-items: center;">
+                        <span style="font-size: 0.8rem; color: #888; font-weight: bold; text-transform: uppercase;"><i
+                                class="fas fa-chart-line" style="color:var(--color-primary); margin-right:5px;"></i>
+                            Evolução de XP (Tarefas)</span>
+                        <select id="task-chart-time"
+                            style="background:transparent; border:none; color:var(--color-primary); outline:none; cursor:pointer; font-size: 0.75rem; font-weight: bold;"
+                            onchange="ChartsModule.renderTaskPerformance()">
+                            <option value="7">Últimos 7 Dias</option>
+                            <option value="15">Últimos 15 Dias</option>
+                            <option value="30">Últimos 30 Dias</option>
+                        </select>
+                    </div>
+                    <div style="height: 220px; position: relative;">
+                        <canvas id="taskPerformanceChart"></canvas>
+                    </div>
+                </div>
+
+                <div
+                    style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05);">
+
+                    <input type="text" id="task-input" class="form-control" placeholder="Nova tarefa..."
+                        style="margin-bottom: 15px;">
+
+                    <div class="input-group-row" style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="date" id="task-date" class="form-control" style="margin-bottom: 0; flex: 1;">
+                        <input type="time" id="task-time" class="form-control" style="margin-bottom: 0; width: 110px;">
+                    </div>
+
+                    <div class="input-group-row" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <select id="task-freq" class="form-control" style="margin-bottom: 0; flex: 1;">
+                            <option value="Geral">Geral</option>
+                            <option value="Diário">Diário</option>
+                            <option value="Semanal">Semanal</option>
+                            <option value="Mensal">Mensal</option>
+                        </select>
+
+                        <select id="task-prio" class="form-control" style="margin-bottom: 0; flex: 1;">
+                            <option value="HIGH">Alta</option>
+                            <option value="MED">Média</option>
+                            <option value="LOW">Baixa</option>
+                        </select>
+                    </div>
+
+                    <div id="task-btns-wrapper" style="display: flex; gap: 10px;">
+                        <button id="btn-task-save" class="btn-primary"
+                            style="width: 100%; height: 55px; font-size: 1rem; font-weight: 700; background-color: var(--color-primary); margin-bottom: 0;"
+                            onclick="TaskModule.save()">
+                            Adicionar
+                        </button>
+
+                        <button id="btn-task-cancel" class="btn-danger hidden"
+                            style="width: 100px; height: 55px; font-size: 1rem; font-weight: 700; margin-bottom: 0;"
+                            onclick="TaskModule.cancelEdit()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+
+                </div>
+                <div id="task-list-container"></div>
+            </div>
+        </div>
+
+        <div id="habitos" class="view-section hidden fade-in">
+            <div class="card card-centralizado">
+
+                <div class="card-header"
+                    style="justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <span class="card-title">Protocolo Base</span>
+                    <div style="position: relative;">
+                        <select id="habit-view-filter" class="form-control"
+                            style="width: auto; height: 30px; padding: 0 10px; font-size: 0.8rem; text-align: center; text-align-last: center;"
+                            onchange="HabitModule.render()">
+                            <option value="hoje">Para Hoje</option>
+                            <option value="all">Todas</option>
+                            <option value="Diário">Diários</option>
+                            <option value="Dias Úteis">Dias Úteis</option>
+                            <option value="Semanal">Semanais</option>
+                            <option value="FDS A">FDS A</option>
+                            <option value="FDS B">FDS B</option>
+                            <option value="Quinzenal">Quinzenais</option>
+                            <option value="Mensal">Mensais</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-bottom: 25px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.02);">
+                    <div style="display:flex; justify-content:space-between; margin-bottom: 10px; align-items: center;">
+                        <span style="font-size: 0.8rem; color: #888; font-weight: bold; text-transform: uppercase;"><i
+                                class="fas fa-chart-line" style="color:var(--color-success); margin-right:5px;"></i>
+                            Consistência (Hábitos)</span>
+                        <select id="habit-chart-time"
+                            style="background:transparent; border:none; color:var(--color-success); outline:none; cursor:pointer; font-size: 0.75rem; font-weight: bold;"
+                            onchange="ChartsModule.renderHabitPerformance()">
+                            <option value="7">Últimos 7 Dias</option>
+                            <option value="15">Últimos 15 Dias</option>
+                            <option value="30">Últimos 30 Dias</option>
+                        </select>
+                    </div>
+                    <div style="height: 220px; position: relative;">
+                        <canvas id="habitPerformanceChart"></canvas>
+                    </div>
+                </div>
+
+                <div
+                    style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05);">
+                    <input type="text" id="habit-input" class="form-control" placeholder="Nova atividade da rotina..."
+                        style="margin-bottom: 10px;">
+                    <input type="text" id="habit-desc" class="form-control" placeholder="Descrição (Opcional)"
+                        style="margin-bottom: 15px; font-size: 0.85rem; color: #aaa;">
+
+                    <div class="input-group-row" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <input type="time" id="habit-time" class="form-control" style="margin-bottom: 0; width: 110px;"
+                            required>
+                        <select id="habit-freq" class="form-control" style="margin-bottom: 0; flex: 1;"
+                            onchange="HabitModule.toggleDaysSelection()">
+                            <option value="Diário">Diário (Todos os dias)</option>
+                            <option value="Dias Úteis">Dias Úteis (Seg-Sex)</option>
+                            <option value="Semanal">Semanal (Escolha os dias)</option>
+                            <option value="FDS A">FDS A (Quinzenal A)</option>
+                            <option value="FDS B">FDS B (Quinzenal B)</option>
+                            <option value="Quinzenal">Quinzenal</option>
+                            <option value="Mensal">Mensal</option>
+                        </select>
+                    </div>
+
+                    <div id="habit-days-selection" class="hidden"
+                        style="display: flex; gap: 15px; margin-bottom: 15px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                        <span style="color: #888; font-size: 0.8rem; display: flex; align-items: center;">Dias de
+                            Execução:</span>
+                        <label
+                            style="color: #ccc; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <input type="checkbox" id="habit-day-6" value="6" checked> Sábado
+                        </label>
+                        <label
+                            style="color: #ccc; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <input type="checkbox" id="habit-day-0" value="0" checked> Domingo
+                        </label>
+                    </div>
+
+                    <div id="habit-btns-wrapper" style="display: flex; gap: 10px;">
+                        <button id="btn-habit-save" class="btn-primary"
+                            style="width: 100%; height: 55px; font-size: 1rem; font-weight: 700; background-color: var(--color-primary); margin-bottom: 0;"
+                            onclick="HabitModule.save()">
+                            Adicionar
+                        </button>
+                        <button id="btn-habit-cancel" class="btn-danger hidden"
+                            style="width: 100px; height: 55px; font-size: 1rem; font-weight: 700; margin-bottom: 0;"
+                            onclick="HabitModule.cancelEdit()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                </div>
+
+                <div id="habit-list-container"></div>
+            </div>
+        </div>
+
+        <div id="biblioteca" class="view-section hidden fade-in">
+            <div class="card card-centralizado">
+                <div class="card-header" style="justify-content: space-between;">
+                    <span class="card-title">Base de Conhecimento</span>
+                    <select id="lib-view-filter" class="form-control"
+                        style="width: auto; height: 30px; padding: 0 10px; font-size: 0.8rem; text-align: center; text-align-last: center;"
+                        onchange="LibraryModule.render()">
+                        <option value="all">Todos</option>
+                        <option value="Diário">Diários</option>
+                        <option value="Semanal">Semanais</option>
+                        <option value="Mensal">Mensais</option>
+                    </select>
+                </div>
+
+                <div
+                    style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05);">
+
+                    <div class="input-group-row" style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="lib-title" class="form-control" placeholder="Nome do Livro ou Curso..."
+                            style="margin-bottom: 0; flex: 2;">
+                        <select id="lib-type" class="form-control" style="width: 110px; margin-bottom: 0;">
+                            <option value="book">Livro</option>
+                            <option value="course">Curso</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group-row" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <input type="text" id="lib-note" class="form-control"
+                            placeholder="Onde parei? (ex: Pág 42, Aula 3...)" style="margin-bottom: 0; flex: 2;">
+                        <select id="lib-freq" class="form-control" style="width: 110px; margin-bottom: 0;">
+                            <option value="Diário">Diário</option>
+                            <option value="Semanal">Semanal</option>
+                            <option value="Mensal">Mensal</option>
+                        </select>
+                    </div>
+
+                    <div id="lib-btns-wrapper" style="display: flex; gap: 10px;">
+                        <button id="btn-lib-save" class="btn-primary"
+                            style="width: 100%; height: 55px; font-size: 1rem; font-weight: 700; background-color: var(--color-primary);"
+                            onclick="LibraryModule.save()">
+                            Adicionar
+                        </button>
+                        <button id="btn-lib-cancel" class="btn-danger hidden"
+                            style="width: 100px; height: 55px; font-size: 1rem; font-weight: 700;"
+                            onclick="LibraryModule.cancelEdit()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                </div>
+
+                <div id="library-list-container"></div>
+            </div>
+        </div>
+    </main>
+
+    <div id="productivity-modal" class="modal-overlay" onclick="DashboardModule.closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title" id="prod-modal-title">Tarefas</span>
+                <button class="modal-close" onclick="DashboardModule.closeModal(event)"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="prod-modal-body">
+            </div>
+        </div>
+    </div>
+
+    <nav class="mobile-nav">
+        <button class="mob-link active" onclick="System.navigate('dashboard')">
+            <i class="fas fa-home"></i> Home
+        </button>
+        <button class="mob-link" onclick="System.navigate('financeiro')">
+            <i class="fas fa-wallet"></i> Banco
+        </button>
+        <button class="mob-link" onclick="System.navigate('tarefas')">
+            <i class="fas fa-check-square"></i> Tarefas
+        </button>
+        <button class="mob-link" onclick="System.navigate('habitos')">
+            <i class="fas fa-fire"></i> Hábitos
+        </button>
+        <button class="mob-link" onclick="System.navigate('biblioteca')">
+            <i class="fas fa-book"></i> Biblio
+        </button>
+    </nav>
+
+    <div id="streak-modal" class="streak-modal-overlay">
+        <div class="streak-modal-content">
+            <div class="streak-flame-container fade-in">
+                <i class="fas fa-fire streak-flame"></i>
+            </div>
+
+            <h1 class="streak-number fade-in" id="streak-big-number">0</h1>
+            <h2 class="streak-text fade-in">Dias de ofensiva</h2>
+
+            <div class="streak-week-container fade-in" style="animation-delay: 0.2s;">
+                <div class="streak-connection-track"></div>
+                <div id="streak-connection-bar" class="streak-connection-bar"></div>
+
+                <div id="streak-week-days" class="streak-week-days">
+                </div>
+            </div>
+
+            <p class="streak-stats fade-in" style="animation-delay: 0.4s;">Você está entre os <span>1%</span> das
+                pessoas que já aumentaram a ofensiva hoje!</p>
+
+            <button class="btn-continue fade-in" style="animation-delay: 0.5s;"
+                onclick="StreakModule.closeModal()">Continuar</button>
+        </div>
+    </div>
+    <script src="assets/js/app.js"></script>
+</body>
+
+</html>
