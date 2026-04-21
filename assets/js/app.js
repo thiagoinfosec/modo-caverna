@@ -882,7 +882,7 @@ const DB = {
                         const displayBank = t.accName ? t.accName.replace(' Banking', '') : 'Conta';
 
                         log.innerHTML += `
-                        <div class="habit-card-mini fade-in" style="
+                        <div class="habit-card-mini fade-in mobile-expandable" style="
                             border-left: 4px solid ${colorCode}; 
                             padding: 12px 15px; 
                             margin-bottom: 10px; 
@@ -908,8 +908,12 @@ const DB = {
                                     </span>
                                 </div>
                             </div>
+                            
+                            <div class="expand-btn" onclick="this.parentElement.classList.toggle('expanded')">
+                                <i class="fas fa-chevron-down"></i> Exibir Detalhes e Ações
+                            </div>
 
-                            <div style="text-align: right; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end;">
+                            <div class="expand-content" style="text-align: right; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end;">
                                 <div style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 0.9rem; color: ${colorCode};">
                                     ${sign} R$ ${t.val.toFixed(2)}
                                 </div>
@@ -1518,8 +1522,8 @@ const DB = {
                         : '';
 
                     list.innerHTML += `
-                    <div class="task-item fade-in">
-                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                    <div class="task-item fade-in mobile-expandable">
+                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%; flex-wrap:wrap;">
                             
                             <div style="display:flex; align-items:center; gap:15px; flex:1; min-width:0;">
                                 <i class="far ${checkIcon}" onclick="TaskModule.toggle(${originalIndex})" style="color:${checkColor}; cursor:pointer; font-size:1.5rem; flex-shrink:0;"></i>
@@ -1534,7 +1538,11 @@ const DB = {
                                 </div>
                             </div>
 
-                            <div style="display:flex; gap:10px; align-items:center; margin-left:10px; flex-shrink:0;">
+                            <div class="expand-btn" onclick="this.parentElement.parentElement.classList.toggle('expanded')">
+                                <i class="fas fa-chevron-down"></i> Opções da Tarefa
+                            </div>
+
+                            <div class="expand-content" style="display:flex; gap:10px; align-items:center; margin-left:10px; flex-shrink:0;">
                                 ${calendarBtn}
                                 <i class="fas fa-pen" onclick="TaskModule.edit(${originalIndex})" style="cursor:pointer; color:#888; font-size:0.9rem;" title="Editar"></i>
                                 <i class="fas fa-trash" onclick="TaskModule.delete(${originalIndex})" style="cursor:pointer; color:#666; font-size:1.1rem;" title="Excluir"></i>
